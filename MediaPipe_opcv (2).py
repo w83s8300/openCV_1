@@ -53,8 +53,15 @@ while True:
 
                     if i == 8:#只要一的點
                         cv2.circle(img, (xPos, yPos), 5, (166, 56, 56), cv2.FILLED)
-                        drawPoints.append([xPos, yPos, penColorBGR])
-                        print([xPos, yPos, penColorBGR])
+                        xPos_end = xPos
+                        yPos_end = yPos
+
+                        if cv2.waitKey(1) == ord('e'):#案W畫線
+                            drawPoints.append([xPos, yPos, penColorBGR])
+                        
+              
+                    
+
                     # print(i, xPos, yPos) #標示點的座標
 
 
@@ -63,13 +70,18 @@ while True:
         fps = 1/(cTime-pTime)#換算FPS
         pTime = cTime
         draw(drawPoints)
-
+        cv2.putText(imgContour, "END", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
+        cv2.putText(imgContour, "Re", (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
         cv2.imshow('imgContour', imgContour)
+        print(xPos_end, yPos_end)
+        if xPos_end < 100:
+            if yPos_end < 50:
+                break
 
-    if cv2.waitKey(1) == ord('q'):
-        break
-    elif cv2.waitKey(1) == ord('w'):
-        drawPoints = []
+
+        if xPos_end > 550:
+            if yPos_end < 50:
+                drawPoints = []
 
 
 
