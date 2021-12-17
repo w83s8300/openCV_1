@@ -13,7 +13,10 @@ pTime = 0
 cTime = 0
 
 #繪畫讀取的顏色
-penColorBGR = [255, 0, 0]
+penColorBGR_B = [255, 0, 0]
+penColorBGR_R = [0, 255, 0]
+penColorBGR_G = [0, 0, 255]
+
 Pan_size=5#點的大小
 
 
@@ -23,7 +26,7 @@ yPos_end =999
 
 def draw(drawpoints):#畫圖
     for point in drawpoints:
-        cv2.circle(imgContour, (point[0], point[1]), Pan_size, penColorBGR, cv2.FILLED)#找輪廓 畫點
+        cv2.circle(imgContour, (point[0], point[1]), Pan_size, penColorBGR_B, cv2.FILLED)#找輪廓 畫點
 
 while True:
     ret, img = cap.read()
@@ -51,7 +54,7 @@ while True:
                         yPos_end = yPos
 
                         if cv2.waitKey(1) == ord('e'):#案W畫線
-                            drawPoints.append([xPos, yPos, penColorBGR])
+                            drawPoints.append([xPos, yPos, penColorBGR_B])
                     # print(i, xPos, yPos) #標示點的座標
         imgContour = img.copy()#讀輸入相機的圖
         cTime = time.time()#現在的時間
@@ -60,6 +63,7 @@ while True:
         draw(drawPoints)
         cv2.putText(imgContour, "END", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
         cv2.putText(imgContour, "Re", (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
+        cv2.putText(imgContour, f"FPS : {int(fps)}", (30, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
         cv2.imshow('imgContour', imgContour)
         print(xPos_end, yPos_end)
         if xPos_end < 100:
