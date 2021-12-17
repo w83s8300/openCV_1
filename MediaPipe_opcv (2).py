@@ -25,15 +25,11 @@ def draw(drawpoints):#畫圖
     for point in drawpoints:
         cv2.circle(imgContour, (point[0], point[1]), Pan_size, penColorBGR, cv2.FILLED)#找輪廓 畫點
 
-
-
-
 while True:
     ret, img = cap.read()
     if ret:
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)#把圖變BGR>RGB
         result = hands.process(imgRGB)#讀取圖
-
         # print(result.multi_hand_landmarks) #讀取手的座標
         #vvvv視窗
         imgHeight = img.shape[0]
@@ -49,8 +45,6 @@ while True:
 
                     # cv2.putText(img, str(i), (xPos-25, yPos+5), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2)#標示第幾的點
                     #            (img<要畫的圖, str(i)<標第幾的點, (xPos-25, yPos+5)<標的位子, cv2.FONT_HERSHEY_SIMPLEX<字型, 0.4<大小, (0, 0, 255)<顏色, 2<粗細)
-
-
                     if i == 8:#只要一的點
                         cv2.circle(img, (xPos, yPos), 5, (166, 56, 56), cv2.FILLED)
                         xPos_end = xPos
@@ -58,13 +52,7 @@ while True:
 
                         if cv2.waitKey(1) == ord('e'):#案W畫線
                             drawPoints.append([xPos, yPos, penColorBGR])
-                        
-              
-                    
-
                     # print(i, xPos, yPos) #標示點的座標
-
-
         imgContour = img.copy()#讀輸入相機的圖
         cTime = time.time()#現在的時間
         fps = 1/(cTime-pTime)#換算FPS
@@ -77,11 +65,11 @@ while True:
         if xPos_end < 100:
             if yPos_end < 50:
                 break
-
-
         if xPos_end > 550:
             if yPos_end < 50:
                 drawPoints = []
+    if cv2.waitKey(1) == ord('q'):
+        break
 
 
 
