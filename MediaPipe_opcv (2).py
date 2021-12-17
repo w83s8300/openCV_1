@@ -53,38 +53,18 @@ while True:
 
                     if i == 8:#只要一的點
                         cv2.circle(img, (xPos, yPos), 5, (166, 56, 56), cv2.FILLED)
-                        xPos_end =xPos
-                        yPos_end =yPos
-                        
-                        if cv2.waitKey(1) == ord('e'):#案E紀錄軌跡
-                            drawPoints.append([xPos, yPos, penColorBGR])
-                            
-                    
-                        
+                        drawPoints.append([xPos, yPos, penColorBGR])
+                        print([xPos, yPos, penColorBGR])
+                    # print(i, xPos, yPos) #標示點的座標
 
 
-        
         imgContour = img.copy()#讀輸入相機的圖
         cTime = time.time()#現在的時間
         fps = 1/(cTime-pTime)#換算FPS
         pTime = cTime
         draw(drawPoints)
-        #cv2.putText(imgContour, f"FPS : {int(fps)}", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
-        # (imgContour, f"FPS : {int(fps)}", (30, 50)<位子, cv2.FONT_HERSHEY_SIMPLEX<字型, 0.5<字的大小, (255, 0, 0), 2)
-        cv2.putText(imgContour, "END", (25, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把END畫在圖上
-        cv2.putText(imgContour, "Repaint", (550, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把重畫畫在圖上
+
         cv2.imshow('imgContour', imgContour)
-        print(xPos_end, yPos_end)
-        if xPos_end < 100:
-            if yPos_end <30:
-                break
-        if xPos_end > 550:
-            if yPos_end <30:
-                drawPoints = []
-
-
-
-
 
     if cv2.waitKey(1) == ord('q'):
         break
