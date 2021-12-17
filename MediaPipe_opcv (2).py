@@ -37,6 +37,7 @@ def draw(drawpoints):#畫圖
 while True:
     ret, img = cap.read()
     if ret:
+        img = cv2.resize(img, (0, 0), fx=1.5, fy=1.5)
         img = cv2.flip(img,1)#翻轉圖片
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)#把圖變BGR>RGB
         result = hands.process(imgRGB)#讀取圖
@@ -85,14 +86,14 @@ while True:
         pTime = cTime
         draw(drawPoints)
         cv2.putText(imgContour, "END", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
-        cv2.putText(imgContour, "Re", (550, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
-        cv2.putText(imgContour, f"FPS : {int(fps)}", (30, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
+        cv2.putText(imgContour, "Re", (imgWidth-50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
+        cv2.putText(imgContour, f"FPS : {int(fps)}", (30, imgHeight-30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
         cv2.imshow('imgContour', imgContour)
         print(xPos_end, yPos_end)
-        if xPos_end < 100:
+        if xPos_end < 50:
             if yPos_end < 50:
                 break
-        if xPos_end > 550:
+        if xPos_end > imgWidth-50:
             if yPos_end < 50:
                 drawPoints = []
     if cv2.waitKey(1) == ord('q'):
