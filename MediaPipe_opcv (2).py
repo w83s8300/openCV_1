@@ -26,7 +26,7 @@ yPos_end =999
 
 def draw(drawpoints):#畫圖
     for point in drawpoints:
-        cv2.circle(imgContour, (point[0], point[1]), Pan_size, penColorBGR_B, cv2.FILLED)#找輪廓 畫點
+        cv2.circle(imgContour, (point[0], point[1]), Pan_size, point[2], cv2.FILLED)#找輪廓 畫點
 
 while True:
     ret, img = cap.read()
@@ -48,13 +48,17 @@ while True:
 
                     # cv2.putText(img, str(i), (xPos-25, yPos+5), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 2)#標示第幾的點
                     #            (img<要畫的圖, str(i)<標第幾的點, (xPos-25, yPos+5)<標的位子, cv2.FONT_HERSHEY_SIMPLEX<字型, 0.4<大小, (0, 0, 255)<顏色, 2<粗細)
-                    if i == 8:#只要一的點
+                    if i == 8:#只要食指的點
                         cv2.circle(img, (xPos, yPos), 5, (166, 56, 56), cv2.FILLED)
                         xPos_end = xPos
                         yPos_end = yPos
 
-                        if cv2.waitKey(1) == ord('e'):#案W畫線
+                        if cv2.waitKey(1) == ord('z'):#案z畫線 畫藍色
                             drawPoints.append([xPos, yPos, penColorBGR_B])
+                        if cv2.waitKey(1) == ord('x'):#案x畫線 畫紅色
+                            drawPoints.append([xPos, yPos, penColorBGR_R])
+                        if cv2.waitKey(1) == ord('c'):#案c畫線 畫綠色
+                            drawPoints.append([xPos, yPos, penColorBGR_G])
                     # print(i, xPos, yPos) #標示點的座標
         imgContour = img.copy()#讀輸入相機的圖
         cTime = time.time()#現在的時間
