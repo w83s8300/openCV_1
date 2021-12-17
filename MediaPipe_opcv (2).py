@@ -11,11 +11,17 @@ handLmsStyle = mpDraw.DrawingSpec(color=(0, 0, 255), thickness=3)#<點的樣式(
 handConStyle = mpDraw.DrawingSpec(color=(255, 255, 255), thickness=5)#<線的樣式(顏色,大小)
 pTime = 0
 cTime = 0
+Pos_8 = 0
+Pos_12 = 0
+x=0
+
+
 
 #繪畫讀取的顏色
 penColorBGR_B = [255, 0, 0]
 penColorBGR_R = [0, 255, 0]
 penColorBGR_G = [0, 0, 255]
+penColorBGR_K = [0, 0, 0]
 
 Pan_size=5#點的大小
 
@@ -31,6 +37,7 @@ def draw(drawpoints):#畫圖
 while True:
     ret, img = cap.read()
     if ret:
+        img = cv2.flip(img,1)#翻轉圖片
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)#把圖變BGR>RGB
         result = hands.process(imgRGB)#讀取圖
         # print(result.multi_hand_landmarks) #讀取手的座標
@@ -52,15 +59,27 @@ while True:
                         cv2.circle(img, (xPos, yPos), 5, (166, 56, 56), cv2.FILLED)
                         xPos_end = xPos
                         yPos_end = yPos
-
+                        Pos_8 = xPos + yPos
                         if cv2.waitKey(1) == ord('z'):#案z畫線 畫藍色
                             drawPoints.append([xPos, yPos, penColorBGR_B])
                         if cv2.waitKey(1) == ord('x'):#案x畫線 畫紅色
                             drawPoints.append([xPos, yPos, penColorBGR_R])
                         if cv2.waitKey(1) == ord('c'):#案c畫線 畫綠色
                             drawPoints.append([xPos, yPos, penColorBGR_G])
+                    if i == 12:#只要一的點
+
+                        cv2.circle(img, (xPos, yPos), 5, (166, 56, 56), cv2.FILLED)
+                        Pos_12 = xPos + yPos
+
+                    x=abs(int(Pos_8 - Pos_12))
+                    if x < 30:
+                        drawPoints.append([xPos_end, yPos_end, penColorBGR_K])
+
+                    
                     # print(i, xPos, yPos) #標示點的座標
+
         imgContour = img.copy()#讀輸入相機的圖
+         
         cTime = time.time()#現在的時間
         fps = 1/(cTime-pTime)#換算FPS
         pTime = cTime

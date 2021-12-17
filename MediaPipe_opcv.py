@@ -1,8 +1,18 @@
 import cv2
 import mediapipe as mp
 import time
+import matplotlib.pyplot as plt
+import glob
+from IPython.display import clear_output
+from PIL import Image
+import numpy
+
+
 
 cap = cv2.VideoCapture(0)
+img2 = cv2.imread('003.png')
+
+
 mpHands = mp.solutions.hands#讀取手的模型
 hands = mpHands.Hands(static_image_mode=False, min_detection_confidence=0.5, min_tracking_confidence=0.5)#設定模型的參數
 # (static_image_mode=False<設定動態圖片:False
@@ -21,9 +31,12 @@ Pos_8 = 0
 Pos_12 = 0
 x=0
 
+
+
 while True:
     ret, img = cap.read()
     if ret:
+        img = cv2.flip(img,1)#翻轉圖片
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)#把圖變BGR>RGB
         result = hands.process(imgRGB)#讀取圖
 
@@ -48,6 +61,8 @@ while True:
                         xPos_end = xPos
                         yPos_end = yPos
                         Pos_8 = xPos + yPos
+                        img1 = cv2.imread('shape01.jpg')
+                        
                        # print(i, xPos, yPos) #標示點的座標
 
                     if i == 12:#只要一的點
@@ -55,15 +70,23 @@ while True:
                        Pos_12 = xPos + yPos
                       # print(i, xPos, yPos) #標示點的座標
 
+
+
         cTime = time.time()#現在的時間
         fps = 1/(cTime-pTime)#換算FPS
         pTime = cTime
         x=abs(int(Pos_8 - Pos_12))
+        if x < 30 :
+            img1_pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) #转换为PIL格式
+            img2_pil = Image.fromarray(cv2.cvtColor(img2, cv2.COLOR_BGR2RGB))
+            img1_pil.paste(img2_pil, (xPos_end, yPos_end)) #img2贴在img1指定位置，位置是(左,上)
+            img = cv2.cvtColor(numpy.asarray(img1_pil), cv2.COLOR_RGB2BGR) 
+
+
         print(x)
         cv2.putText(img, "END", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
         cv2.putText(img, f"FPS : {int(fps)}", (30, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)#把FPS畫在圖上
         # (img, f"FPS : {int(fps)}", (30, 50)<位子, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)
-
         cv2.imshow('img', img)
         if xPos_end < 100:
             if yPos_end < 50:
