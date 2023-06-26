@@ -1,0 +1,11 @@
+URL:https://leeten.loc.com.tw/
+
+HTML_ID:ID
+HTML_PWD:PWD
+HTML_ImageKeyName:ImageKey
+
+Keypng:RandomPic.jsp
+
+ID:w83s8300
+PWD:q83a8300
+
